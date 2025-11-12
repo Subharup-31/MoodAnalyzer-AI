@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MoodSync Setup Verification</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+            color: #1e293b;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        
+        h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #64748b;
+            margin-bottom: 30px;
+        }
+        
+        .check-item {
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 12px;
+            border-left: 4px solid #e2e8f0;
+            background: #f8fafc;
+        }
+        
+        .check-item.success {
+            border-left-color: #4ade80;
+            background: #f0fdf4;
+        }
+        
+        .check-item.error {
+            border-left-color: #f87171;
+            background: #fef2f2;
+        }
+        
+        .check-item.warning {
+            border-left-color: #fbbf24;
+            background: #fffbeb;
+        }
+        
+        .check-title {
+            font-weight: 700;
+            font-size: 1.1em;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .check-message {
+            color: #64748b;
+            line-height: 1.6;
+        }
+        
+        .icon {
+            font-size: 1.5em;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 12px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .code {
+            background: #1e293b;
+            color: #4ade80;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: monospace;
+            margin: 10px 0;
+            overflow-x: auto;
+        }
+        
+        .link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 MoodSync Setup Verification</h1>
+        <p class="subtitle">Let's check if everything is configured correctly</p>
+        
+        <button onclick="runChecks()">Run Setup Checks</button>
+        
+        <div id="results"></div>
+    </div>
+
+    <script type="module">
+        import { CONFIG } from './config.js';
+        
+        window.runChecks = async function() {
+            const results = document.getElementById('results');
+            results.innerHTML = '<p style="text-align: center; color: #667eea; margin: 20px 0;">Running checks...</p>';
+            
+            const checks = [];
+            
+            // Check 1: Firebase Configuration
+            if (CONFIG.firebase.apiKey !== 'YOUR_FIREBASE_API_KEY' && CONFIG.firebase.apiKey !== '') {
+                checks.push({
+                    status: 'success',
+                    title: '✅ Firebase Configuration',
+                    message: 'Firebase is configured with a valid API key.'
+                });
+            } else {
+                checks.push({
+                    status: 'error',
+                    title: '❌ Firebase Configuration',
+                    message: 'Firebase is not configured. Update config.js with your Firebase credentials. See AUTHENTICATION_SETUP.md for instructions.'
+                });
+            }
+            
+            // Check 2: Current Domain
+            const domain = window.location.hostname;
+            checks.push({
+                status: 'warning',
+                title: '📍 Current Domain',
+                message: `You're running on: <strong>${domain}</strong><br>Make sure this domain is added to Firebase authorized domains:<br><div class="code">Firebase Console → Authentication → Settings → Authorized domains</div>`
+            });
+            
+            // Check 3: Gemini API
+            if (CONFIG.gemini && CONFIG.gemini.apiKey !== 'YOUR_GEMINI_API_KEY' && CONFIG.gemini.apiKey !== '') {
+                checks.push({
+                    status: 'success',
+                    title: '✅ Gemini AI',
+                    message: 'Gemini API is configured. You\'ll get personalized AI responses!'
+                });
+            } else {
+                checks.push({
+                    status: 'warning',
+                    title: '⚠️ Gemini AI',
+                    message: 'Gemini API not configured. App will use template responses. Get your API key at <a href="https://makersuite.google.com/app/apikey" target="_blank" class="link">Google AI Studio</a>'
+                });
+            }
+            
+            // Check 4: Firebase Connection Test
+            if (CONFIG.firebase.apiKey !== 'YOUR_FIREBASE_API_KEY') {
+                try {
+                    const { initializeApp } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js');
+                    const { getAuth } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js');
+                    
+                    const app = initializeApp(CONFIG.firebase);
+                    const auth = getAuth(app);
+                    
+                    checks.push({
+                        status: 'success',
+                        title: '✅ Firebase Connection',
+                        message: 'Successfully connected to Firebase!'
+                    });
+                } catch (error) {
+                    checks.push({
+                        status: 'error',
+                        title: '❌ Firebase Connection',
+                        message: `Failed to connect to Firebase: ${error.message}<br>Check your Firebase configuration in config.js`
+                    });
+                }
+            }
+            
+            // Check 5: Browser Compatibility
+            const hasLocalStorage = typeof(Storage) !== "undefined";
+            if (hasLocalStorage) {
+                checks.push({
+                    status: 'success',
+                    title: '✅ Browser Compatibility',
+                    message: 'Your browser supports all required features.'
+                });
+            } else {
+                checks.push({
+                    status: 'error',
+                    title: '❌ Browser Compatibility',
+                    message: 'Your browser doesn\'t support local storage. Please use a modern browser.'
+                });
+            }
+            
+            // Display results
+            results.innerHTML = checks.map(check => `
+                <div class="check-item ${check.status}">
+                    <div class="check-title">
+                        ${check.title}
+                    </div>
+                    <div class="check-message">
+                        ${check.message}
+                    </div>
+                </div>
+            `).join('');
+            
+            // Summary
+            const successCount = checks.filter(c => c.status === 'success').length;
+            const errorCount = checks.filter(c => c.status === 'error').length;
+            
+            results.innerHTML += `
+                <div class="check-item ${errorCount === 0 ? 'success' : 'warning'}" style="margin-top: 30px;">
+                    <div class="check-title">
+                        📊 Summary
+                    </div>
+                    <div class="check-message">
+                        <strong>${successCount}</strong> checks passed, 
+                        <strong>${errorCount}</strong> errors found<br><br>
+                        ${errorCount === 0 
+                            ? '🎉 Everything looks good! You can start using MoodSync.' 
+                            : '⚠️ Please fix the errors above before using MoodSync.'}
+                        <br><br>
+                        <a href="index.html" class="link">→ Go to MoodSync App</a><br>
+                        <a href="TROUBLESHOOTING.md" class="link" target="_blank">→ View Troubleshooting Guide</a>
+                    </div>
+                </div>
+            `;
+        };
+    </script>
+</body>
+</html>

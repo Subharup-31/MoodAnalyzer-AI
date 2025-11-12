@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>MoodSync - Sync Your Mind, Feel Your Mood</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.10.99/build/spline-viewer.js"></script>
+</head>
+<body>
+    <!-- Glassmorphic Sausage Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-pill">
+            <div class="nav-logo">
+                <span class="logo-text">MoodSync</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home" class="nav-link">Home</a></li>
+                <li><a href="#features" class="nav-link">Features</a></li>
+                <li class="nav-buttons">
+                    <a href="/app" class="nav-link login-btn">Login</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section with Spline 3D -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1 class="hero-title">
+                    <span class="title-word title-word-subtle">Sync.</span> 
+                    <span class="title-word title-word-subtle">Feel.</span> 
+                    <span class="title-word title-word-gradient">Heal.</span>
+                </h1>
+                <p class="hero-tagline">Your AI companion for mental wellness and emotional intelligence</p>
+                <button onclick="window.location.href='/app'" class="cssbuttons-io-button">
+                    get started
+           >
+            </div>
+            <div class="hero-visual">
+                <spline-viewer url="https://prod.spline.design/Vja574pkFu11gtGH/scene.splinecode"></spline-viewer>
+            </div>
+        </div>
+        <div class="hero-background">
+            <div class="gradient-blob blob-1"></div>
+            <div class="gradient-blob blob-2"></div>
+            <div class="gradient-blob blob-3"></div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="features-container">
+            <h2 class="section-title">Powerful Features</h2>
+            <p class="section-subtitle">Everything you need for mental wellness</p>
+            
+            <div class="features-grid">
+                <!-- Feature Card 1: AI Journal -->
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2a9 9 0 0 1 9 9c0 3.5-2 6.5-5 8v2a1 1 0 0 1-1 1h-6a1 1 0 0 1-1-1v-2c-3-1.5-5-4.5-5-8a9 9 0 0 1 9-9z"/>
+                            <path d="M8 15h8"/>
+                            <path d="M9 18h6"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">AI Journal</h3>
+                    <p class="feature-description">Write your thoughts and get personalized AI insights</p>
+                </div>
+
+                <!-- Feature Card 2: Mood Tracker -->
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
+                            <line x1="9" y1="9" x2="9.01" y2="9"/>
+                            <line x1="15" y1="9" x2="15.01" y2="9"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Mood Tracker</h3>
+                    <p class="feature-description">Track daily moods and understand emotional patterns</p>
+                </div>
+
+                <!-- Feature Card 3: Mood Playlists -->
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 18V5l12-2v13"/>
+                            <circle cx="6" cy="18" r="3"/>
+                            <circle cx="18" cy="16" r="3"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Mood Playlists</h3>
+                    <p class="feature-description">Get Spotify playlists based on your current mood</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <div class="footer-logo">
+                    <span class="logo-text">MoodSync</span>
+                </div>
+                <p class="footer-tagline">Sync your mind, feel your mood</p>
+            </div>
+            
+            <div class="footer-links">
+                <div class="footer-column">
+                    <h4>Product</h4>
+                    <a href="#features">Features</a>
+                    <a href="#home">About</a>
+                    <a href="/app">Get Started</a>
+                </div>
+                
+                <div class="footer-column">
+                    <h4>Resources</h4>
+                    <a href="#">Documentation</a>
+                    <a href="#">Support</a>
+                    <a href="#">Privacy Policy</a>
+                </div>
+                
+                <div class="footer-column">
+                    <h4>Connect</h4>
+                    <a href="#">Twitter</a>
+                    <a href="#">GitHub</a>
+                    <a href="#">Discord</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 MoodSync. Made with 💙 by Subharup</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

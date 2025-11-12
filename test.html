@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MoodSync Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ccc; }
+        .success { color: green; }
+        .error { color: red; }
+        button { padding: 10px 20px; margin: 5px; }
+        textarea { width: 100%; height: 100px; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <h1>MoodSync Functionality Test</h1>
+    
+    <div class="test-section">
+        <h2>1. Basic Elements Test</h2>
+        <div id="elementsTest">Testing...</div>
+    </div>
+    
+    <div class="test-section">
+        <h2>2. Save Entry Test</h2>
+        <textarea id="testInput" placeholder="Write a test entry here...">I'm feeling really happy today! This is a wonderful day and I'm excited about everything.</textarea>
+        <br>
+        <button onclick="testSaveEntry()">Test Save Entry</button>
+        <div id="saveTest">Ready to test...</div>
+    </div>
+    
+    <div class="test-section">
+        <h2>3. Console Output</h2>
+        <p>Check the browser console (F12) for detailed logs.</p>
+        <button onclick="window.location.href='index.html'">Go to Main App</button>
+    </div>
+
+    <script type="module">
+        import { CONFIG, MOODS } from './config.js';
+        
+        // Test 1: Check if elements exist
+        function testElements() {
+            const elements = [
+                'journalInput', 'saveBtn', 'charCount', 'quoteText', 
+                'quoteAuthor', 'moodDisplay', 'weeklyChart', 'monthlyChart'
+            ];
+            
+            let results = [];
+            elements.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    results.push(`✅ ${id}: Found`);
+                } else {
+                    results.push(`❌ ${id}: Missing`);
+                }
+            });
+            
+            document.getElementById('elementsTest').innerHTML = results.join('<br>');
+        }
+        
+        // Test 2: Test save functionality
+        window.testSaveEntry = function() {
+            const testInput = document.getElementById('testInput');
+            const saveTest = document.getElementById('saveTest');
+            
+            if (testInput.value.trim().length < 10) {
+                saveTest.innerHTML = '<span class="error">❌ Please write at least 10 characters</span>';
+                return;
+            }
+            
+            // Test mood analysis
+            const text = testInput.value.toLowerCase();
+            let detectedMood = 'calm';
+            
+            Object.entries(MOODS).forEach(([mood, data]) => {
+                data.keywords.forEach(keyword => {
+                    if (text.includes(keyword)) {
+                        detectedMood = mood;
+                    }
+                });
+            });
+            
+            const moodData = MOODS[detectedMood];
+            saveTest.innerHTML = `
+                <div class="success">
+                    ✅ Entry would be saved!<br>
+                    📝 Text: ${testInput.value.length} characters<br>
+                    😊 Detected mood: ${moodData.emoji} ${moodData.label}<br>
+                    💬 AI Reply: "${moodData.reply}"
+                </div>
+            `;
+        };
+        
+        // Run tests when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🧪 Running MoodSync tests...');
+            
+            // Test configuration
+            console.log('📋 Config test:', CONFIG);
+            console.log('😊 Moods test:', MOODS);
+            
+            // Test elements (will show missing since this is test page)
+            testElements();
+            
+            console.log('✅ Tests completed - check results above');
+        });
+    </script>
+</body>
+</html>
